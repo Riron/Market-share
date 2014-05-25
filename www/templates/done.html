@@ -1,0 +1,27 @@
+<ion-view title="To-do lists">
+	<ion-nav-buttons side="left">
+   <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+  </ion-nav-buttons>
+
+  <ion-content class="has-header">
+	  <div class="list card" ng-repeat="list in ctrl.lists | orderByPriority | filter:{archive: true}">
+		  <a class="item" ui-sref="app.todos({todosId: list.$id})">
+		    {{ list.title }}
+		  </a>
+		  <div class="item tabs tabs-secondary tabs-icon-left">
+		  	<a class="tab-item" ng-click="ctrl.listArchive()">
+		      <i class="icon ion-folder"></i>
+		      Archive
+		    </a>
+		    <a class="tab-item">
+		      <i class="icon ion-battery-low"></i>
+		      7 tasks remaining
+		    </a>
+		    <a class="tab-item">
+		      <i class="icon ion-share"></i>
+		      Share
+		    </a>
+		  </div>
+		</div>
+  </ion-content>
+</ion-view>
