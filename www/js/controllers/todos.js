@@ -1,29 +1,33 @@
-var TodosCtrl = function ($firebase, FBURL, $stateParams, $ionicLoading, $ionicPopup, $scope) {
-	this.todos = $firebase(new Firebase(FBURL + '/lists/' + $stateParams.todosId + '/todos'));
-	this.value = '';
-	this.$ionicPopup = $ionicPopup;
-	this.listId = $stateParams.todosId;
+var TodosCtrl = function ($stateParams, $ionicLoading, $ionicPopup, FirebaseService, $rootScope) {
+	var ref = FirebaseService.ref().child('lists/' + $stateParams.todosId);
+	this.list = FirebaseService.syncData(ref);
+	this.todos = FirebaseService.syncData(ref.child('todos'));
 
+	this.value = '';
+	this.listId = $stateParams.todosId;
+	
+	// Dependencies
+	this.$ionicPopup = $ionicPopup;
+
+	// Loading screen
 	$ionicLoading.show({
       template: '<i class="ion-looping"></i> Loading...'
   });
-
   this.todos.$on('loaded', function() {
-	  $ionicLoading.hide();
-	});
-	this.todos.$on('loaded', function() {
 	  $ionicLoading.hide();
 	});
 };
 
 TodosCtrl.prototype.addTodo = function (e) {
-	if (e.keyCode != 13) return;
+	if (e && e.keyCode != 13) return;
 	this.todos.$add({value: this.value, date: new Date(), checked: false});
 	this.value = '';
 };
 
 TodosCtrl.prototype.deleteTodo = function(key) {
 	var self = this;
+	
+	// Confirmation pop-up
 	var confirmPopup = this.$ionicPopup.confirm({
 		title: 'Delete task',
 		template: 'Are you sure you want to delete this task?'
@@ -40,5 +44,20 @@ TodosCtrl.prototype.deleteTodo = function(key) {
 TodosCtrl.prototype.todoCheck = function (key) {
 		this.todos.$save(key);
 };
+
+TodosCtrl.prototype.filterTodos = function () {
+	var self = this;
+	
+	// Confirmation pop-up
+	var filterPopup = this.$ionicPopup.show({
+		title: 'Filter categories',
+		template: 'categories here'
+	});
+	filterPopup.then(function(res) {
+		if(res) {
+			console.log('filter')
+		} 
+	});
+}
 
 app.controller('TodosCtrl', TodosCtrl);

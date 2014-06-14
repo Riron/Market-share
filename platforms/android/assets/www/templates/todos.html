@@ -1,0 +1,46 @@
+<ion-view title="{{ctrl.list.title}}">
+  <ion-content class="has-header">
+    <div class="item item-input-inset">
+	    <label class="item-input-wrapper">
+	      <input type="text" placeholder="Nouvelle tâche" ng-keydown="ctrl.addTodo($event)" ng-model="ctrl.value">
+	    </label>
+	    <button class="button button-small" ng-click="ctrl.addTodo()">
+	      Add
+	    </button>
+	  </div>
+    <ion-list>
+    	<div class="card" ng-show="(ctrl.todos | orderByPriority).length == 0">
+			  <div class="item item-text-wrap">
+			    There is no item yet
+			  </div>
+			</div>
+			<ion-item ng-repeat="todo in ctrl.todos | orderByPriority | filter:{checked: false}" class="todos">
+				<div class="row">
+				  <div class="col-textarea">
+					  <label class="checkbox list-checkbox" ng-click="true">
+							<input type="checkbox" ng-model="todo.checked" ng-change="ctrl.todoCheck(todo.$id)">
+						</label>
+					</div>
+				  <div class="col" ui-sref="app.todo({todosId: ctrl.listId, todoId: todo.$id})">
+				  	{{todo.value}}
+				  </div>
+				</div>	
+  		<ion-option-button class="button-assertive" ng-click="ctrl.deleteTodo(todo.$id)"><i class="ion-close-round"></i></ion-option-button>
+    	</ion-item>
+    	<div class="item item-divider" ng-show="doneTodos.length > 0">
+				Recently Completed
+		  </div>
+		  <ion-item ng-repeat="todo in doneTodos = (ctrl.todos | orderByPriority | filter:{checked: true})" class="todos">
+				<div class="row">
+				  <div class="col-textarea">
+					  <label class="checkbox list-checkbox" ng-click="true">
+							<input type="checkbox" ng-model="todo.checked" ng-change="ctrl.todoCheck(todo.$id)">
+						</label>
+					</div>
+				  <div class="col" ui-sref="app.todo({todosId: ctrl.listId, todoId: todo.$id})">{{todo.value}}</div>
+				</div>	  		
+  		<ion-option-button class="button-assertive" ng-click="ctrl.deleteTodo(todo.$id)"><i class="ion-close-round"></i></ion-option-button>
+    	</ion-item>
+		</ion-list>
+  </ion-content>
+</ion-view>

@@ -1,8 +1,9 @@
 <ion-view title="Item">
   <ion-content class="has-header">
 	  <div class="item">
-	    <h2>{{ ctrl.todo.value }}</h2>
-	    <p>{{ ctrl.todo.date | date:'mediumDate' }}</p>
+	    <h2 ng-show="!ctrl.edit" ng-click="ctrl.editTodo()">{{ ctrl.todo.value }}</h2>
+	    <input type="text" ng-model="ctrl.todo.value" ng-show="ctrl.edit" ng-blur="ctrl.editTodo()">
+	    <p>{{ ctrl.todo.date | date:'mediumDate' }} <span ng-repeat="category in ctrl.todo.categories">- {{ category.value.title }} </span></p>
 	  </div>
     <div class="item item-body" ng-if="ctrl.todo.body">
 	    <p>{{ ctrl.todo.body }}</p>
@@ -12,9 +13,9 @@
 	      <i class="icon ion-checkmark-round" ng-class="{balanced: ctrl.todo.checked}" ></i>
 	      Complete
 	    </a>
-	    <a class="tab-item">
-	      <i class="icon ion-edit"></i>
-	      Edit
+	    <a class="tab-item" ng-click="ctrl.setCategory()">
+	      <i class="icon ion-pricetags"></i>
+	      Category
 	    </a>
 	    <a class="tab-item" ng-click="ctrl.deleteTodo()">
 	      <i class="icon ion-close-round assertive"></i>

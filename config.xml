@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.ionicframework.starter" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>HelloCordova</name>
+<widget id="com.corp.charlier.todo" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Share List</name>
     <description>
-        An Ionic Framework and Cordova project.
+        To do list sharing app
     </description>
-    <author email="hi@ionicframework" href="http://ionicframework.com/">
-      Ionic Framework Team
+    <author email="orioncharlier@gmail.com" href="http://orioncharlier.com/">
+      Orion Charlier
     </author>
     <content src="index.html" />
     <access origin="*" />

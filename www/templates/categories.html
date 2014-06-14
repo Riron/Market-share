@@ -1,0 +1,35 @@
+<ion-view title="Categories">
+	<ion-nav-buttons side="left">
+   <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+  </ion-nav-buttons>
+
+  <ion-content class="has-header">
+    <ion-list>
+	  	<div class="card">
+	  		<label class="item item-input">
+			    <input type="text" placeholder="Add a new category..." ng-model="ctrl.title">
+			  </label>
+				<div class="item tabs tabs-secondary tabs-icon-left">
+			    <a class="tab-item" ng-click="ctrl.addColor()">
+			      <i class="icon ion-star"></i>
+			      Color
+			    </a>
+			    <a class="tab-item" ng-click="ctrl.addCategory()">
+			      <i class="icon ion-checkmark-round"></i>
+			      Add
+			    </a>
+			  </div>
+	  	</div>
+    	<div class="card" ng-show="(ctrl.categories | orderByPriority).length == 0">
+			  <div class="item item-text-wrap">
+			    There is no category yet
+			  </div>
+			</div>
+			<div class="card">
+				<div class="item item-text-wrap" ng-repeat="category in ctrl.categories | orderByPriority">
+				  {{category.title}}
+	    	</div>
+    	</div>
+		</ion-list>
+  </ion-content>
+</ion-view>

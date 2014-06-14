@@ -6,7 +6,7 @@
 // 'starter.controllers' is found in controllers.js
 var app = angular.module('marketshare', ['ionic', 'firebase'])
 .value('FBURL', 'https://market-share.firebaseio.com')
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, SimpleLoginFactory, $rootScope, $state, $urlRouter) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -18,6 +18,23 @@ var app = angular.module('marketshare', ['ionic', 'firebase'])
       StatusBar.styleDefault();
     }
   });
+  
+  $rootScope.auth = SimpleLoginFactory.init();
+
+  $rootScope.$on('$stateChangeStart', function(event, toState, toStateParams) {
+    if(!SimpleLoginFactory.isAuth() && (toState.name != 'login')) {
+      event.preventDefault();
+      SimpleLoginFactory.getUser(function (user) {
+        if(user) {
+          $state.go(toState.name);
+        }
+        else {
+          console.log('redirect to login')
+          $state.go('login');
+        }
+      })
+    }
+  });
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
@@ -27,7 +44,7 @@ var app = angular.module('marketshare', ['ionic', 'firebase'])
       url: "/app",
       abstract: true,
       templateUrl: "templates/menu.html",
-      controller: 'AppCtrl as app'
+      controller: 'MenuCtrl as app'
     })
 
     .state('app.home', {
@@ -68,8 +85,24 @@ var app = angular.module('marketshare', ['ionic', 'firebase'])
           controller: 'HomeCtrl as ctrl'
         }
       }
+    })
+
+    .state('app.categories', {
+      url: "/categories",
+      views: {
+        'menuContent' :{
+          templateUrl: "templates/categories.html",
+          controller: 'CategoriesCtrl as ctrl'
+        }
+      }
+    })
+
+    .state('login', {
+      url: "/login",
+      templateUrl: "templates/login.html",
+      controller: 'LoginCtrl as ctrl'
     });
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/todos');
+  $urlRouterProvider.otherwise('/app/home');
 });
 

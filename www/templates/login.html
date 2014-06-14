@@ -1,0 +1,30 @@
+<ion-view>
+  <ion-content class="padding">
+		<button class="button button-block button-stable" ng-click="login = !login" ng-show="!login && !signup">Log In</button>
+		<button class="button button-block button-stable" ng-click="signup = !signup" ng-show="!login && !signup">Sign Up</button>
+
+		<div class="list list-inset" ng-show="signup">
+		  <label class="item item-input">
+		  	<i class="icon ion-email placeholder-icon"></i>
+		    <input type="text" placeholder="Email" ng-model="email">
+		  </label>
+		  <label class="item item-input">
+		  	<i class="icon ion-locked placeholder-icon"></i>
+		    <input type="password" placeholder="Password" ng-model="password">
+		  </label>
+		  <button class="button button-block button-stable" ng-click="ctrl.signup(email, password)">Sign Up</button>
+		</div>
+
+		<div class="list list-inset" ng-show="login">
+		  <label class="item item-input">
+		  	<i class="icon ion-email placeholder-icon"></i>
+		    <input type="text" placeholder="Email" ng-model="email">
+		  </label>
+		  <label class="item item-input">
+		  	<i class="icon ion-locked placeholder-icon"></i>
+		    <input type="password" placeholder="Password" ng-model="password">
+		  </label>
+		  <button class="button button-block button-stable" ng-click="ctrl.login(email, password)">Log In</button>
+		</div>
+  </ion-content>
+</ion-view>

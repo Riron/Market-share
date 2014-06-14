@@ -53,3 +53,11 @@ a.item:after {
   line-height: 1;
   speak: none;
 }
+
+.user {
+  text-align: center;
+  padding-top: 15px;
+}
+.user-profile {
+  border-radius: 50%;
+}

@@ -1,0 +1,55 @@
+/* Empty. Add your own CSS if you like */
+.list-checkbox {
+	vertical-align: middle;
+	padding: 0 5px 0 0;
+}
+.col-textarea {
+	float: left;
+	width: 33px;
+}
+.balanced {
+	color: #66cc33;
+}
+.assertive {
+	color: #ef4e3a;
+}
+.todos.item-complex .item-content {
+	padding: 5px 45px 5px 15px;
+}
+
+.slide-down.ng-enter, .slide-down.ng-leave {
+-webkit-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+  transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+}
+
+.slide-down.ng-enter,
+.slide-down.ng-leave.ng-leave-active {
+  opacity: 0;
+  max-height: 0;
+}
+
+.slide-down.ng-leave,
+.slide-down.ng-enter.ng-enter-active {
+  opacity: 1;
+  max-height: 1000px;
+}
+
+a.item:after {
+	-webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+  position: absolute;
+  top: 50%;
+  right: 11px;
+  display: block;
+  margin-top: -8px;
+  color: #ccc;
+  content: "\f125";
+  text-transform: none;
+  font-weight: normal;
+  font-style: normal;
+  font-variant: normal;
+  font-size: 16px;
+  font-family: 'Ionicons';
+  line-height: 1;
+  speak: none;
+}
