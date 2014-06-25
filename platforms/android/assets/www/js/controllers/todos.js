@@ -1,5 +1,5 @@
 var TodosCtrl = function ($stateParams, $ionicLoading, $ionicPopup, FirebaseService, $rootScope) {
-	var ref = FirebaseService.ref().child('lists/' + $rootScope.auth.user.id + '/' + $stateParams.todosId);
+	var ref = FirebaseService.ref().child('lists/' + $stateParams.todosId);
 	this.list = FirebaseService.syncData(ref);
 	this.todos = FirebaseService.syncData(ref.child('todos'));
 
@@ -16,6 +16,7 @@ var TodosCtrl = function ($stateParams, $ionicLoading, $ionicPopup, FirebaseServ
   this.todos.$on('loaded', function() {
 	  $ionicLoading.hide();
 	});
+
 };
 
 TodosCtrl.prototype.addTodo = function (e) {

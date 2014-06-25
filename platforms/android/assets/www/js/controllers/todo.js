@@ -1,10 +1,16 @@
-var TodoCtrl = function ($stateParams, $ionicPopup, $state, FirebaseService, $rootScope) {
-	var ref = FirebaseService.ref().child('lists/' + $rootScope.auth.user.id + '/' + $stateParams.todosId + '/todos/' + $stateParams.todoId);
+var TodoCtrl = function ($stateParams, $ionicPopup, $state, FirebaseService, $rootScope, $scope) {
+	var ref = FirebaseService.ref().child('lists/' + $stateParams.todosId + '/todos/' + $stateParams.todoId);
 	this.todo = FirebaseService.syncData(ref);
+	var catRef =  FirebaseService.ref().child('/users/' + $rootScope.auth.user.id + '/categories');
+	this.categories = FirebaseService.syncData(catRef);
 	
 	// Dependencies
 	this.$ionicPopup = $ionicPopup;
 	this.$state = $state;
+	this.$stateParams = $stateParams;
+	$scope.categories = this.categories;
+	this.$scope = $scope;
+
 }
 
 TodoCtrl.prototype.deleteTodo = function() {
@@ -16,7 +22,7 @@ TodoCtrl.prototype.deleteTodo = function() {
 	confirmPopup.then(function(res) {
 		if(res) {
 			self.todo.$remove();
-			this.$state.go('app.todos');
+			self.$state.go('app.todos', {todosId: self.$stateParams.todosId});
 		} else {
 			console.log('Cancel deletion');
 		}
@@ -28,14 +34,37 @@ TodoCtrl.prototype.checkTodo = function () {
 	this.todo.$save();
 }
 
-TodoCtrl.prototype.setCategory = function () {
+TodoCtrl.prototype.editTodo = function () {
+	this.edit = !this.edit;
+	this.todo.$save();
+}
 
-	var alertPopup = this.$ionicPopup.alert({
+TodoCtrl.prototype.setCategory = function () {
+	var self = this;
+	angular.forEach(this.todo.categories, function (value, key) {
+		self.$scope.categories[value.key].checked = true;
+	});
+	var alertPopup = this.$ionicPopup.show({
 		title: 'Category',
-		template: 'Coming soon : associate items to categories'
+		template: '<ion-checkbox ng-repeat="category in categories" ng-model="category.checked">{{category.title}}</ion-checkbox>',
+		scope: self.$scope,
+		buttons: [
+     {
+       text: 'Save',
+       type: 'button-positive',
+       onTap: function () { return self.$scope.categories }
+     }
+   ]
 	});
 	alertPopup.then(function(res) {
-		console.log('choice was made')
+		cat = [];
+		angular.forEach(res, function (value, key) {
+			if(value.checked) {
+				cat.push({key: key, value: value})
+			}
+		})
+		self.todo.categories = cat;
+		self.todo.$save();
 	});
 }
 

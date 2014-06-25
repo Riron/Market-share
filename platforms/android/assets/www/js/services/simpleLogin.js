@@ -1,6 +1,9 @@
-var SimpleLogin = function ($firebaseSimpleLogin, firebaseRefService) {
+var SimpleLogin = function ($firebaseSimpleLogin, FirebaseService) {
+	this.ref = FirebaseService.ref();
+
+	this.users = FirebaseService.syncData(this.ref.child('users'));
+
 	// Dependencies
-	this.firebaseRefService = firebaseRefService;
 	this.$firebaseSimpleLogin = $firebaseSimpleLogin;
 	
 	// Var
@@ -23,19 +26,21 @@ SimpleLogin.prototype.init = function () {
 	/*ionic.Platform.ready(function () {
 		return this.auth = this.$firebaseSimpleLogin(this.dataRef);
 	})*/
-	this.auth = this.$firebaseSimpleLogin(this.firebaseRefService());
+	this.auth = this.$firebaseSimpleLogin(this.ref);
 	this.getUser();
 	return this.auth;
 }
 
 SimpleLogin.prototype.getUser = function (callback) {
 	var self = this;
-	this.auth.$getCurrentUser().then(function (user) {
-    if(user) {
-    	self.authenticated = true;
-    }
-    if(callback) { callback(user) };
-  });
+	ionic.Platform.ready(function () {
+		self.auth.$getCurrentUser().then(function (user) {
+	    if(user) {
+	    	self.authenticated = true;
+	    }
+	    if(callback) { callback(user) };
+	  });
+	})
 }
 
 SimpleLogin.prototype.login = function (email, password, callback) {
@@ -55,7 +60,13 @@ SimpleLogin.prototype.login = function (email, password, callback) {
 }
 
 SimpleLogin.prototype.signup = function (email, password) {
-	this.auth.$createUser(email, password, true);
+	var self = this;
+	this.auth.$createUser(email, password).then(function (user) {
+		console.log(user)
+		var ref = self.users.$child(user.id);
+		ref.$set({email: email});
+		//self.users.$add({email: email, id: user.id});
+	});
 }
 
 SimpleLogin.prototype.logout = function () {

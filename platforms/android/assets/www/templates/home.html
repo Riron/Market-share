@@ -20,7 +20,7 @@
 	  			    </a>
 	  			  </div>
 	  	</div>
-	  	<div class="card" ng-repeat="list in ctrl.lists | orderByPriority | filter:{archive: false}">
+	  	<div class="card" ng-repeat="list in ctrl.readeableLists | filter:{archive: false}">
 	  			  <a class="item" ui-sref="app.todos({todosId: list.$id})">
 	  			    {{ list.title }}
 	  			  </a>
@@ -31,9 +31,9 @@
 	  			    </a>
 	  			    <a class="tab-item">
 	  			      <i class="icon ion-battery-low"></i>
-	  			      7 tasks remaining
+	  			      7 remaining
 	  			    </a>
-	  			    <a class="tab-item">
+	  			    <a class="tab-item" ui-sref="app.share({todosId: list.$id})">
 	  			      <i class="icon ion-share"></i>
 	  			      Share
 	  			    </a>

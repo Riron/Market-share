@@ -8,47 +8,44 @@ var app = angular.module('marketshare', ['ionic', 'firebase'])
 .value('FBURL', 'https://market-share.firebaseio.com')
 .run(function($ionicPlatform, SimpleLoginFactory, $rootScope, $state, $urlRouter) {
   $ionicPlatform.ready(function() {
-    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-    // for form inputs)
-    if(window.cordova && window.cordova.plugins.Keyboard) {
-      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-    }
     if(window.StatusBar) {
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
+
+    $rootScope.auth = SimpleLoginFactory.init();
+  });
+
+  $rootScope.$on("$firebaseSimpleLogin:login", function(e, user) {
+    $state.go('app.home');
+    console.log("User " + user.id + " successfully logged in!");
+  });
+
+  $rootScope.$on("$firebaseSimpleLogin:logout", function(e) {
+    $state.go('login');
+  });
+
+  $rootScope.$on("$firebaseSimpleLogin:error", function(e, error) {
+    console.log(error);
+    $state.go('login');
   });
   
-  $rootScope.auth = SimpleLoginFactory.init();
-
   $rootScope.$on('$stateChangeStart', function(event, toState, toStateParams) {
-    console.log(toState)
-    console.log(SimpleLoginFactory.isAuth())
     if(!SimpleLoginFactory.isAuth() && (toState.name != 'login')) {
       event.preventDefault();
-      console.log('prevent')
       SimpleLoginFactory.getUser(function (user) {
-        console.log(user);
+        console.log(user)
         if(user) {
-          console.log('continue to state')
           $state.go(toState.name);
         }
         else {
           console.log('redirect to login')
           $state.go('login');
         }
-        console.log('gogo')
       })
-      /*SimpleLoginFactory.auth.$getCurrentUser().then(function (user) {
-        console.log(SimpleLoginFactory.isAuth());
-        if(!user) {
-          $state.go('login');
-        }
-      }, function () {
-        $state.go('login');
-      })*/
     }
   });
+  
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
@@ -91,12 +88,32 @@ var app = angular.module('marketshare', ['ionic', 'firebase'])
       }
     })
 
+    .state('app.share', {
+      url: "/home/share/:todosId",
+      views: {
+        'menuContent' :{
+          templateUrl: "templates/share.html",
+          controller: 'ShareCtrl as ctrl'
+        }
+      }
+    })
+
     .state('app.archive', {
       url: "/archive",
       views: {
         'menuContent' :{
           templateUrl: "templates/done.html",
           controller: 'HomeCtrl as ctrl'
+        }
+      }
+    })
+
+    .state('app.categories', {
+      url: "/categories",
+      views: {
+        'menuContent' :{
+          templateUrl: "templates/categories.html",
+          controller: 'CategoriesCtrl as ctrl'
         }
       }
     })

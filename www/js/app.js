@@ -8,23 +8,33 @@ var app = angular.module('marketshare', ['ionic', 'firebase'])
 .value('FBURL', 'https://market-share.firebaseio.com')
 .run(function($ionicPlatform, SimpleLoginFactory, $rootScope, $state, $urlRouter) {
   $ionicPlatform.ready(function() {
-    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-    // for form inputs)
-    if(window.cordova && window.cordova.plugins.Keyboard) {
-      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-    }
     if(window.StatusBar) {
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
+
+    $rootScope.auth = SimpleLoginFactory.init();
+  });
+
+  $rootScope.$on("$firebaseSimpleLogin:login", function(e, user) {
+    $state.go('app.home');
+    console.log("User " + user.id + " successfully logged in!");
+  });
+
+  $rootScope.$on("$firebaseSimpleLogin:logout", function(e) {
+    $state.go('login');
+  });
+
+  $rootScope.$on("$firebaseSimpleLogin:error", function(e, error) {
+    console.log(error);
+    $state.go('login');
   });
   
-  $rootScope.auth = SimpleLoginFactory.init();
-
   $rootScope.$on('$stateChangeStart', function(event, toState, toStateParams) {
     if(!SimpleLoginFactory.isAuth() && (toState.name != 'login')) {
       event.preventDefault();
       SimpleLoginFactory.getUser(function (user) {
+        console.log(user)
         if(user) {
           $state.go(toState.name);
         }
@@ -35,6 +45,7 @@ var app = angular.module('marketshare', ['ionic', 'firebase'])
       })
     }
   });
+  
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
@@ -73,6 +84,16 @@ var app = angular.module('marketshare', ['ionic', 'firebase'])
         'menuContent' :{
           templateUrl: "templates/todo.html",
           controller: 'TodoCtrl as ctrl'
+        }
+      }
+    })
+
+    .state('app.share', {
+      url: "/home/share/:todosId",
+      views: {
+        'menuContent' :{
+          templateUrl: "templates/share.html",
+          controller: 'ShareCtrl as ctrl'
         }
       }
     })

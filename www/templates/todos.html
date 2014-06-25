@@ -1,8 +1,4 @@
 <ion-view title="{{ctrl.list.title}}">
-	<ion-nav-buttons side="right">
-   <button ng-click="ctrl.filterTodos()" class="button button-icon icon ion-pricetags"></button>
-  </ion-nav-buttons>
-
   <ion-content class="has-header">
     <div class="item item-input-inset">
 	    <label class="item-input-wrapper">
@@ -27,7 +23,7 @@
 					</div>
 				  <div class="col" ui-sref="app.todo({todosId: ctrl.listId, todoId: todo.$id})">
 				  	{{todo.value}}
-				  	<p><span ng-repeat="category in todo.categories">{{ category.value.title }} </span></p>
+				  	<p><span ng-repeat="category in todo.categories" ng-class="category.value.color">{{ category.value.title }} </span></p>
 				  </div>
 				</div>	
   		<ion-option-button class="button-assertive" ng-click="ctrl.deleteTodo(todo.$id)"><i class="ion-close-round"></i></ion-option-button>

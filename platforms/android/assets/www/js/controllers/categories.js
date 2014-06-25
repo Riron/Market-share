@@ -13,12 +13,12 @@ CategoriesCtrl.prototype.addCategory = function () {
 }
 
 CategoriesCtrl.prototype.addColor = function () {
-	var alertPopup = this.$ionicPopup.show({
+	var alertPopup = this.$ionicPopup.alert({
 		title: 'Choose a color',
 		template: '<span class="color-box bg-stable"></span><span class="color-box bg-positive"></span><span class="color-box bg-calm"></span><span class="color-box bg-balanced"></span><span class="color-box bg-energized"></span><span class="color-box bg-assertive"></span><span class="color-box bg-royal"></span><span class="color-box bg-dark"></span>'
 	});
 	alertPopup.then(function(res) {
-		console.log('Colors choosed');
+		console.log('Thank you for not eating my delicious ice cream cone');
 	});
 }
 

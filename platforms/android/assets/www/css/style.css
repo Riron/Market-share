@@ -53,3 +53,54 @@ a.item:after {
   line-height: 1;
   speak: none;
 }
+
+.user {
+  text-align: center;
+  padding-top: 15px;
+}
+.user-profile {
+  border-radius: 50%;
+}
+
+.color-box {
+  display: block;
+  float: left;
+  height: 25px;
+  width: 25px;
+  background-color: #f8f;
+  border-radius: 50%;
+  margin: 5px;
+  border: 1px solid black;
+}
+
+.bg-stable {
+  background-color: #f8f8f8;
+}
+
+.bg-positive {
+  background-color: #4a87ee;
+}
+
+.bg-calm {
+  background-color: #43cee6;
+}
+
+.bg-balanced {
+  background-color: #66cc33;
+}
+
+.bg-energized {
+  background-color: #f0b840;
+}
+
+.bg-assertive {
+  background-color: #ef4e3a;
+}
+
+.bg-royal {
+  background-color: #8a6de9;
+}
+
+.bg-dark {
+  background-color: #444;
+}

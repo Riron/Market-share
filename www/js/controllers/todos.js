@@ -16,6 +16,7 @@ var TodosCtrl = function ($stateParams, $ionicLoading, $ionicPopup, FirebaseServ
   this.todos.$on('loaded', function() {
 	  $ionicLoading.hide();
 	});
+
 };
 
 TodosCtrl.prototype.addTodo = function (e) {
@@ -44,20 +45,5 @@ TodosCtrl.prototype.deleteTodo = function(key) {
 TodosCtrl.prototype.todoCheck = function (key) {
 		this.todos.$save(key);
 };
-
-TodosCtrl.prototype.filterTodos = function () {
-	var self = this;
-	
-	// Confirmation pop-up
-	var filterPopup = this.$ionicPopup.show({
-		title: 'Filter categories',
-		template: 'categories here'
-	});
-	filterPopup.then(function(res) {
-		if(res) {
-			console.log('filter')
-		} 
-	});
-}
 
 app.controller('TodosCtrl', TodosCtrl);

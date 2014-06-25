@@ -1,10 +1,3 @@
-app.factory('firebaseRefService', function(FBURL) {
-
-	return function() {
-		return new Firebase(FBURL);
-	}
-})
-
 var FirebaseService = function (FBURL, $firebase) {
 	this.FBURL = FBURL;
 	this.$firebase = $firebase;

@@ -8,10 +8,11 @@
   </ion-pane>
 
   <ion-side-menu side="left">
-    <header class="bar bar-header bar-stable">
-      <h1 class="title">Menu</h1>
-    </header>
-    <ion-content class="has-header">
+    <ion-content>
+      <div class="user">
+        <img ng-src="http://www.gravatar.com/avatar/{{app.user.md5_hash}}?s=100" class="user-profile">
+        <p>{{app.user.email}}</p>
+      </div>
       <ion-list>
         <ion-item nav-clear menu-close href="#/app/home">
           <i class="ion-document"></i>
@@ -21,9 +22,9 @@
           <i class="ion-trash-b"></i>
           Archive
         </ion-item>
-        <ion-item nav-clear menu-close href="#/app/browse">
-          <i class="ion-person"></i>
-          Profile
+        <ion-item nav-clear menu-close href="#/app/categories">
+          <i class="ion-pricetags"></i>
+          Categories
         </ion-item>
         <ion-item nav-clear menu-close ng-click="app.logout()">
           <i class="ion-power"></i>

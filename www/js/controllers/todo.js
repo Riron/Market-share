@@ -1,12 +1,13 @@
 var TodoCtrl = function ($stateParams, $ionicPopup, $state, FirebaseService, $rootScope, $scope) {
 	var ref = FirebaseService.ref().child('lists/' + $stateParams.todosId + '/todos/' + $stateParams.todoId);
 	this.todo = FirebaseService.syncData(ref);
-	var catRef =  FirebaseService.ref().child($rootScope.auth.user.id + '/categories');
+	var catRef =  FirebaseService.ref().child('/users/' + $rootScope.auth.user.id + '/categories');
 	this.categories = FirebaseService.syncData(catRef);
 	
 	// Dependencies
 	this.$ionicPopup = $ionicPopup;
 	this.$state = $state;
+	this.$stateParams = $stateParams;
 	$scope.categories = this.categories;
 	this.$scope = $scope;
 
@@ -21,7 +22,7 @@ TodoCtrl.prototype.deleteTodo = function() {
 	confirmPopup.then(function(res) {
 		if(res) {
 			self.todo.$remove();
-			this.$state.go('app.todos');
+			self.$state.go('app.todos', {todosId: self.$stateParams.todosId});
 		} else {
 			console.log('Cancel deletion');
 		}

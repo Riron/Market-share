@@ -1,6 +1,17 @@
-var HomeCtrl = function ($ionicLoading, firebaseRefService, FirebaseService, $rootScope) {
-	var ref = FirebaseService.ref().child('lists');
-	this.lists = FirebaseService.syncData(ref.child($rootScope.auth.user.id));
+var HomeCtrl = function ($ionicLoading, FirebaseService, $rootScope) {
+	var ref = FirebaseService.ref();
+	
+	this.listsRef = FirebaseService.syncData(ref.child('lists'));
+	//this.listsRef = ref.child('lists');
+	this.userLists = FirebaseService.syncData(ref.child('users/' + $rootScope.auth.user.id + '/lists'));
+	
+	var self = this;
+	this.readeableLists = [];
+	
+	this.userLists.$on('child_added', function (snap) {
+		var list = self.listsRef.$child(snap.snapshot.value.key);
+		self.readeableLists.push(list)
+	})
 
 	this.formAdd = false;
 	this.formText = '';
@@ -9,15 +20,18 @@ var HomeCtrl = function ($ionicLoading, firebaseRefService, FirebaseService, $ro
       template: '<i class="ion-looping"></i> Loading...'
   });
 
-  this.lists.$on('loaded', function() {
+  this.userLists.$on('loaded', function() {
 	  $ionicLoading.hide();
 	});
 }
 
 HomeCtrl.prototype.addList = function () {
+	var self = this;
 	var newList = {title: this.formText, archive: false, permissions: {} };
 	// newList.permissions[this.$rootScope.auth.user.id] = true;
-	this.lists.$add(newList);
+	this.lists.$add(newList).then(function(ref) {
+  	self.userLists.$add({key: ref.name()});
+	});
 	this.formText = '';
 	this.addForm = false;
 };

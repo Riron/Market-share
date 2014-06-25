@@ -1,19 +1,17 @@
-var HomeCtrl = function ($ionicLoading, firebaseRefService, FirebaseService, $rootScope) {
+var HomeCtrl = function ($ionicLoading, FirebaseService, $rootScope) {
 	var ref = FirebaseService.ref();
-	//this.lists = FirebaseService.syncData(ref.child($rootScope.auth.user.id));
-	this.lists = FirebaseService.syncData(ref.child('lists'));
-	this.userLists = FirebaseService.syncData(ref.child($rootScope.auth.user.id + '/lists'));
+	
+	this.listsRef = FirebaseService.syncData(ref.child('lists'));
+	//this.listsRef = ref.child('lists');
+	this.userLists = FirebaseService.syncData(ref.child('users/' + $rootScope.auth.user.id + '/lists'));
+	
 	var self = this;
 	this.readeableLists = [];
 	
 	this.userLists.$on('child_added', function (snap) {
-		self.lists[snap.snapshot.value.key].$id = snap.snapshot.value.key;
-		self.readeableLists.push(self.lists[snap.snapshot.value.key])
-		console.log(self.readeableLists)
-		console.log(self.lists)
+		var list = self.listsRef.$child(snap.snapshot.value.key);
+		self.readeableLists.push(list)
 	})
-
-	
 
 	this.formAdd = false;
 	this.formText = '';
@@ -22,7 +20,7 @@ var HomeCtrl = function ($ionicLoading, firebaseRefService, FirebaseService, $ro
       template: '<i class="ion-looping"></i> Loading...'
   });
 
-  this.lists.$on('loaded', function() {
+  this.userLists.$on('loaded', function() {
 	  $ionicLoading.hide();
 	});
 }
